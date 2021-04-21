@@ -17,7 +17,7 @@ public class BenzeneStreamGenerator extends RdfStream implements Runnable {
     
     protected final Logger logger = LoggerFactory.getLogger(COStreamGenerator.class);	
     private int c = 1;
-    private boolean keepRunning = false;
+    private boolean keepRunning = false; // tells the thread to keep running
      
     private RdfQuadruple q=null;
      

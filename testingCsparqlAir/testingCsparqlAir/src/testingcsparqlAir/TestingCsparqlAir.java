@@ -199,7 +199,7 @@ public class TestingCsparqlAir {
          inferencingModels.put(language_NTriple, "nt");
          
         
-        JSONObject JSONAnalysis = new JSONObject();
+        //JSONObject JSONAnalysis = new JSONObject();
        
         // Initialize C-SPARQL Engine
 	CsparqlEngine engine = new CsparqlEngineImpl();
@@ -420,7 +420,7 @@ public class TestingCsparqlAir {
                             String saveStreamTURTLEFile="C:\\Users\\user\\Documents\\SmartSUM\\dataset\\streamDataTurtle.ttl";
                             String saveStreamNTRIPLEFile="C:\\Users\\user\\Documents\\SmartSUM\\dataset\\streamDataNTriple.nt";
                             String saveStreamN3File="C:\\Users\\user\\Documents\\SmartSUM\\dataset\\streamDataN3.n3";
-                            String saveStreamJSONLDFile="C:\\Users\\user\\Documents\\SmartSUM\\dataset\\streamDataJsonld.jsonld";
+                            //String saveStreamJSONLDFile="C:\\Users\\user\\Documents\\SmartSUM\\dataset\\streamDataJsonld.jsonld";
                             
                             ontModelHistorical.setNsPrefix("smartSpace",BASE);
                             String saveHistoricalRDFFile = "C:\\Users\\user\\Documents\\SmartSUM\\dataset\\smartSpace.rdf";
