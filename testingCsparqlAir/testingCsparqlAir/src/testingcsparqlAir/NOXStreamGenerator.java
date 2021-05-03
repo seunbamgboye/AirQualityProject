@@ -48,7 +48,7 @@ public class NOXStreamGenerator extends RdfStream implements Runnable {
                         generatedTime);
                 this.put(q);
             try {
-                Thread.sleep(2*1000);
+                Thread.sleep(5*1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
