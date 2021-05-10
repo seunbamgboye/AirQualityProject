@@ -123,11 +123,13 @@ public class TestingCsparqlAir {
     static OntClass ontClassHistoricalCOValue;
     static OntClass ontClassHistoricalNOXValue;
     static OntClass ontClassHistoricalNO2Value;
+    static OntClass ontClassHistoricalMethaneValue;
     static OntClass ontClassHistoricalBenzeneValue;
    
     static Individual individualHistoricalCOReadings;
     static Individual individualHistoricalNOXReadings;
     static Individual individualHistoricalNO2Reading;
+    static Individual individualHistoricalMethaneReading;
     static Individual individualHistoricalBenzeneReading;
    
     
@@ -180,6 +182,7 @@ public class TestingCsparqlAir {
             ontClassHistoricalCOValue = ontModelHistorical.getOntClass(BASE1+"COReadings");
             ontClassHistoricalNOXValue = ontModelHistorical.getOntClass(BASE1+"NOXReadings");
             ontClassHistoricalNO2Value = ontModelHistorical.getOntClass(BASE1+"NO2Readings");
+             ontClassHistoricalMethaneValue = ontModelHistorical.getOntClass(BASE1+"MethaneReadings");
             ontClassHistoricalBenzeneValue = ontModelHistorical.getOntClass(BASE1+"benzeneReadings");
 	} catch (Exception e) {
 		logger.error(e.getMessage(), e);
@@ -191,6 +194,7 @@ public class TestingCsparqlAir {
         RdfStream tg2 = null;
         RdfStream tg3 = null;
         RdfStream tg4 = null;
+        RdfStream tg5 = null;
         
          Hashtable inferencingModels = new Hashtable();
          inferencingModels.put(language_RDF, "rdf");
@@ -230,12 +234,14 @@ public class TestingCsparqlAir {
         tg2 = new NOXStreamGenerator("http://localhost:8080/smartSpace/streamNOX");
         tg3= new COStreamGenerator("http://localhost:8080/smartSpace/streamCO");
         tg4 = new BenzeneStreamGenerator("http://localhost:8080/smartSpace/streamBenzene");
+        tg5 = new MethaneStreamGenerator("http://localhost:8080/smartSpace/streamBenzene");
 
         // Register an RDF Stream
         engine.registerStream(tg);
         engine.registerStream(tg2);
         engine.registerStream(tg3);
         engine.registerStream(tg4);
+        engine.registerStream(tg5);
         
         final Thread t = new Thread((Runnable) tg);
 	t.start();
@@ -245,6 +251,8 @@ public class TestingCsparqlAir {
 	t3.start();
         final Thread t4 = new Thread((Runnable) tg4);
 	t4.start();
+        final Thread t5 = new Thread((Runnable) tg5);
+	t5.start();
 
         CsparqlQueryResultProxy c1 = null;
         
@@ -289,11 +297,13 @@ public class TestingCsparqlAir {
                      Hashtable COData = new Hashtable();
                      Hashtable NOXData = new Hashtable();
                      Hashtable NO2Data = new Hashtable();
+                     Hashtable MethaneData = new Hashtable();
                      Hashtable benzeneData = new Hashtable();
                      
                      Hashtable COTime = new Hashtable();
                      Hashtable NOXTime = new Hashtable();
                      Hashtable NO2Time = new Hashtable();
+                     Hashtable MethaneTime = new Hashtable();
                      Hashtable benzeneTime = new Hashtable();
                      
                      String JSONData = rdfTable.getJsonSerialization();
@@ -317,6 +327,10 @@ public class TestingCsparqlAir {
                                 String strNO2Value = JSONDataset.getJSONObject("NO2Val").getString("value");
                                 String strNO2Time = JSONDataset.getJSONObject("NO2Time").getString("value");
                                 
+                                String strMethaneReadings = JSONDataset.getJSONObject("MethaneReadings").getString("value");
+                                String strMethaneValue = JSONDataset.getJSONObject("MethaneVal").getString("value");
+                                String strMethaneTime = JSONDataset.getJSONObject("MethaneTime").getString("value");
+                                
                                 String strBenzeneReadings = JSONDataset.getJSONObject("benzeneReadings").getString("value");
                                 String strBenzeneValue=JSONDataset.getJSONObject("benzeneVal").getString("value");
                                 String strBenzeneTime = JSONDataset.getJSONObject("benzeneTime").getString("value");
@@ -334,6 +348,11 @@ public class TestingCsparqlAir {
                                 if(!NO2Data.containsKey(strNO2Readings)){
                                     NO2Data.put(strNO2Readings, strNO2Value);
                                     NO2Time.put(strNO2Readings,strNO2Time);
+                                }
+                                
+                                if(!MethaneData.containsKey(strMethaneReadings)){
+                                    MethaneData.put(strMethaneReadings, strMethaneValue);
+                                    MethaneTime.put(strMethaneReadings,strMethaneTime);
                                 }
                                 
                                 if(!benzeneData.containsKey(strBenzeneReadings)){
@@ -399,6 +418,18 @@ public class TestingCsparqlAir {
                               individualHistoricalNO2Reading.addProperty(p("NO2HasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
                             }
                             
+                            dataEnum = MethaneData.keys();
+                            while (dataEnum.hasMoreElements()) {
+                              String key = (String) dataEnum.nextElement();
+                              individualStreamingNO2Value = ontClassStreamingNO2Reading.createIndividual(key);
+                              individualStreamingNO2Value.addProperty(p("hasNO2Value"),l1(String.valueOf(NO2Data.get(key)),XSDDatatype.XSDinteger));
+                              instant = Instant.ofEpochMilli(Long.valueOf(String.valueOf(NO2Time.get(key))));
+                              individualStreamingNO2Value.addProperty(p("NO2HasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
+                               
+                              individualHistoricalNO2Reading = ontClassHistoricalNO2Value.createIndividual(key);
+                              individualHistoricalNO2Reading.addProperty(p("hasNO2Value"),l1(String.valueOf(NO2Data.get(key)),XSDDatatype.XSDinteger));
+                              individualHistoricalNO2Reading.addProperty(p("NO2HasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
+                            }
                             
                             dataEnum = benzeneData.keys();
                             
