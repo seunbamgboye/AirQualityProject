@@ -421,14 +421,14 @@ public class TestingCsparqlAir {
                             dataEnum = MethaneData.keys();
                             while (dataEnum.hasMoreElements()) {
                               String key = (String) dataEnum.nextElement();
-                              individualStreamingNO2Value = ontClassStreamingNO2Reading.createIndividual(key);
-                              individualStreamingNO2Value.addProperty(p("hasNO2Value"),l1(String.valueOf(NO2Data.get(key)),XSDDatatype.XSDinteger));
-                              instant = Instant.ofEpochMilli(Long.valueOf(String.valueOf(NO2Time.get(key))));
-                              individualStreamingNO2Value.addProperty(p("NO2HasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
+                              individualStreamingMethaneValue = ontClassStreamingMethaneReading.createIndividual(key);
+                              individualStreamingMethaneValue.addProperty(p("hasMethaneValue"),l1(String.valueOf(NO2Data.get(key)),XSDDatatype.XSDinteger));
+                              instant = Instant.ofEpochMilli(Long.valueOf(String.valueOf(MethaneTime.get(key))));
+                              individualStreamingMethaneValue.addProperty(p("MethaneHasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
                                
-                              individualHistoricalNO2Reading = ontClassHistoricalNO2Value.createIndividual(key);
-                              individualHistoricalNO2Reading.addProperty(p("hasNO2Value"),l1(String.valueOf(NO2Data.get(key)),XSDDatatype.XSDinteger));
-                              individualHistoricalNO2Reading.addProperty(p("NO2HasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
+                              individualHistoricalMethaneReading = ontClassHistoricalMethaneValue.createIndividual(key);
+                              individualHistoricalMethaneReading.addProperty(p("hasMethaneValue"),l1(String.valueOf(MethaneData.get(key)),XSDDatatype.XSDinteger));
+                              individualHistoricalMethaneReading.addProperty(p("MethaneHasTimestamp"),l1(String.valueOf(instant),XSDDatatype.XSDdateTime));
                             }
                             
                             dataEnum = benzeneData.keys();
