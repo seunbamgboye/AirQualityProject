@@ -662,6 +662,10 @@ public class TestingCsparqlAir {
             .getOntClass("http://localhost:8080/smartSpace#NOXReadings")
             .listInstances();
          
+        ExtendedIterator NOxInstances = modelStreamed
+            .getOntClass("http://localhost:8080/smartSpace#MetahaneReadings")
+            .listInstances();
+        
         ExtendedIterator benzeneInstances = modelStreamed
             .getOntClass("http://localhost:8080/smartSpace#benzeneReadings")
             .listInstances();
@@ -721,6 +725,24 @@ public class TestingCsparqlAir {
             }
             
             tempClass = tempModel.createClass(BASE+"NOXReadings");
+            tempIndividual = tempClass.createIndividual(individualNOx.toString());
+            
+            iterator = individualNOx.listProperties();
+            while(iterator.hasNext()){
+                Statement s = (Statement)iterator.next();
+                 if(s.getObject().isLiteral()){
+                     if(s.getLiteral().toString().contains("integer")){
+                         //System.out.println("Nox value: "+ s.getLiteral().getLexicalForm());
+                         tempIndividual.addProperty(p(s.getPredicate().getLocalName()), s.getLiteral().getLexicalForm(), XSDDatatype.XSDfloat);
+                     }
+                     else if(s.getLiteral().toString().contains("dateTime")){
+                         //System.out.println("Nox Time: "+ streamingTime);
+                         tempIndividual.addProperty(p(s.getPredicate().getLocalName()), streamingTime, XSDDatatype.XSDdateTime);
+                     }
+                 }
+            }
+            
+            tempClass = tempModel.createClass(BASE+"MethaneReadings");
             tempIndividual = tempClass.createIndividual(individualNOx.toString());
             
             iterator = individualNOx.listProperties();
