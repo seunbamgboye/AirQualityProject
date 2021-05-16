@@ -25,8 +25,8 @@ public class BenzeneStreamGenerator extends RdfStream implements Runnable {
     static long generatedTime = 0L;
     
       
-    public BenzeneStreamGenerator(final String iri){
-        super(iri);
+    public BenzeneStreamGenerator(final String result){
+        super(result);
     }
     
     
